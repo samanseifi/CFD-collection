@@ -34,5 +34,5 @@ for t = 1:nt
     df = vcat(df, df1);
 end
 p = plot(df, x="x", y="u", color="Time", Geom.point, Geom.line)
-draw(PNG("1D_convection.png", 6inch, 3inch), p)
+draw(PDF("1D_convection.pdf", 6inch, 3inch), p)
 

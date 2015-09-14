@@ -33,6 +33,5 @@ for t = 1:nt
     df1 = DataFrame(x=x, u=u, Time=dt*t);
     df = vcat(df, df1);
 end
-p = plot(df, x="x", y="u", color="Time", Geom.point, Geom.line)
-draw(PNG("1D_convection.png", 6inch, 3inch), p)
+plot(df, x="x", y="u", color="Time", Geom.point, Geom.line)
 

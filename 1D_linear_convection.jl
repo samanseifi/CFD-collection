@@ -13,7 +13,7 @@ u = zeros(nx);
 u_new = zeros(nx);
 
 for i = 1:nx
-    if x[i] >= 0.9 && x[i] <= 1.0            
+   if x[i] >= 0.9 && x[i] <= 1.0            
         u_init[i] = 10.0*(x[i] - 0.9);
     elseif x[i] <= 1.1 && x[i] >= 1.0
         u_init[i] = 10.0*(1.1 - x[i]);

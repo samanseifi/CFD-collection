@@ -35,6 +35,6 @@ for t = 1:nt
 end
 
 p = plot(df, x="x", y="u", color="Time", Geom.line)
-draw(PDF("1D_diffusion.pdf", 6inch, 3inch), p)
+draw(SVG("1D_diffusion.svg", 6inch, 3inch), p)
 
 		

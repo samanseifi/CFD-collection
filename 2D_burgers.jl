@@ -25,26 +25,29 @@ for i = 1:nx
 		end
 	end
 end
-u_init[:, ny] = u_init[nx, :] = u_init[1, :] = u_init[:, 1] = 0.0;
+u_init[:, ny] = u_init[nx, :] = u_init[1, :] = u_init[:, 1] = 1.0;
 v_init[:, ny] = v_init[nx, :] = v_init[1, :] = v_init[:, 1] = 0.0;
 
 v = v_init;
 u = u_init;
 
-h = quiver(x, y , u, v)
+#plt.quiver(x, y , u, v)
+contourf(x, y, u)
+colorbar()
 for t = 1:nt
-	clf();
+	#plt.clf();
 	for i = 2:nx-1
 		for j = 2:ny-1
 			u_new[i, j] = u[i, j] - (u[i, j]*dt*(u[i, j] - u[i-1, j])/dx) + (vis*dt*(u[i+1, j] - 2*u[i, j] + u[i-1, j])/(dx*dx)) - (u[i, j]*dt*(u[i, j] - u[i, j-1])/dy) + (vis*dt*(u[i, j+1] - 2*u[i, j] + u[i, j-1])/(dy*dy));
 			v_new[i, j] = v[i, j] - (v[i, j]*dt*(v[i, j] - v[i-1, j])/dx) + (vis*dt*(v[i+1, j] - 2*v[i, j] + v[i-1, j])/(dx*dx)) - (v[i, j]*dt*(v[i, j] - v[i, j-1])/dy) + (vis*dt*(v[i, j+1] - 2*v[i, j] + v[i, j-1])/(dy*dy));
 		end	
 	end
-	u_new[:, ny] = u_new[nx, :] = u_new[1, :] = u_new[:, 1] = 0.0;
+	u_new[:, ny] = u_new[nx, :] = u_new[1, :] = u_new[:, 1] = 1.0;
 	v_new[:, ny] = v_new[nx, :] = v_new[1, :] = v_new[:, 1] = 0.0;
 	u = u_new;
 	v = v_new;
-	h = quiver(x, y, u, v)
-	draw()
-	pause(0.01)
+#	plt.quiver(x, y, u, v)
+	contourf(x, y, u, vmin=0, vmax=1);
+	plt.draw()
+	plt.pause(0.01)
 end

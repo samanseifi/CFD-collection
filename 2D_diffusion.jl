@@ -37,7 +37,7 @@ for t = 1:nt
 	u_new[:,ny] = 1.0;
 	u_new[:,1] = 1.0;
 	u = u_new;	
-	contourf(x,y,u)
+	contourf(x,y,u, vmin=1.0, vmax=2.0)
 	#plot(x,u(:,7))
 	draw()
 	sleep(0.5)

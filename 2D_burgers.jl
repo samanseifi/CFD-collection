@@ -31,11 +31,12 @@ v_init[:, ny] = v_init[nx, :] = v_init[1, :] = v_init[:, 1] = 0.0;
 v = v_init;
 u = u_init;
 
-#plt.quiver(x, y , u, v)
-contourf(x, y, u)
+#quiver(x, y , u, v)
+#contourf(x, y, u)
+surf(x, y, u)
 colorbar()
 for t = 1:nt
-	#plt.clf();
+	clf();
 	for i = 2:nx-1
 		for j = 2:ny-1
 			u_new[i, j] = u[i, j] - (u[i, j]*dt*(u[i, j] - u[i-1, j])/dx) + (vis*dt*(u[i+1, j] - 2*u[i, j] + u[i-1, j])/(dx*dx)) - (u[i, j]*dt*(u[i, j] - u[i, j-1])/dy) + (vis*dt*(u[i, j+1] - 2*u[i, j] + u[i, j-1])/(dy*dy));
@@ -47,7 +48,8 @@ for t = 1:nt
 	u = u_new;
 	v = v_new;
 #	plt.quiver(x, y, u, v)
-	contourf(x, y, u, vmin=0, vmax=1);
-	plt.draw()
-	plt.pause(0.01)
+#	contourf(x, y, u, vmin=0, vmax=1);
+	surf(x, y, u);
+	draw()
+	pause(0.01)
 end

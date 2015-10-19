@@ -1,5 +1,5 @@
-function [ output_args ] = chanell_flow( nx, ny, nt, nit, c, rho, nu, F, dt)
-% chanell_flow( 41, 41, 10, 50, 1, 1, 0.1, 1, 0.1)
+function [ output_args ] = channel_flow( nx, ny, nt, nit, c, rho, nu, F, dt)
+% channel_flow( 41, 41, 10, 50, 1, 1, 0.1, 1, 0.1)
 
 %nx = 41;
 %ny = 41;

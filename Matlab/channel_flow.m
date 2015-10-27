@@ -1,4 +1,4 @@
-function [ output_args ] = channel_flow( nx, ny, nt, nit, c, rho, nu, F, dt)
+function [ u,v,p ] = channel_flow( nx, ny, nt, nit, c, rho, nu, F, dt)
 % channel_flow( 41, 41, 10, 50, 1, 1, 0.1, 1, 0.1)
 
 %nx = 41;

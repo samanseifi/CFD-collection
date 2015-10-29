@@ -1,4 +1,3 @@
-clear;
 
 
 Input; % Input values
@@ -23,4 +22,8 @@ for t=dt:dt:t_final
     %plot(x, u);
     %drawnow;
 end
-
+plot(rho)
+%subplot(2,2,1),     	plot(x(1:10:end),rho(1:10:end) ,'o', xx, rhoexact, 'r')
+%subplot(2,2,2),    	plot(x(1:10:end),u(1:10:end),'o', xx, uexact, 'r')
+%subplot(2,2,3),    	plot(x(1:10:end),P(1:10:end), 'o', xx, pexact, 'r' )
+%subplot(2,2,4),        plot(x(1:10:end),e(1:10:end), 'o',xx,  pexact./(gamma-1) + 0.5*rhoexact.*uexact.^2, 'r' )

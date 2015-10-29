@@ -73,8 +73,8 @@ for i = 1:length(xx)
 end
 entroexact = log(pexact./rhoexact.^gamma);
 
-% subplot(2,3,1),     	plot(xx,rhoexact)
-% subplot(2,3,2),    	plot(xx,uexact)
-% subplot(2,3,3),    	plot(xx,pexact)
-% subplot(2,3,4),  	plot(xx,machexact)
-% subplot(2,3,5),     	plot(xx,entroexact)
+ subplot(2,2,1),     	plot(xx,rhoexact)
+ subplot(2,2,2),    	plot(xx,uexact)
+ subplot(2,2,3),    	plot(xx,pexact)
+ subplot(2,2,4),  	plot(xx,pexact./(gamma-1) + 0.5*rhoexact.*uexact.^2)
+ %subplot(2,3,5),     	plot(xx,entroexact)

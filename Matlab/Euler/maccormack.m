@@ -1,4 +1,4 @@
-hold on
+%hold on
 clear
 Input; % Input Values
 Sod; % Sod shock initial condition
@@ -14,7 +14,7 @@ for t = dt:dt:t_final
     E = [rho.*u; rho.*u.^2+p; u.*(e+p)]; 
     
     %-------Predictor Step------%
-    Q_bar(1:3,1:n-1) = 0.5*(Q(1:3,1:n-1) + Q(1:3,2:n)) - dt/(2*dx)*(E(1:3,2:n) - E(1:3,1:n-1));
+    Q_bar(1:3,1:n-1) = 0.5*(Q(1:3,1:n-1) + Q(1:3,2:n)) - dt/(dx)*(E(1:3,2:n) - E(1:3,1:n-1));
     
     %Q_bar(1:3, 1:n-1) = Q(1:3, 1:n-1) - (dt/dx)*(E(1:3, 2:n) - E(1:3, 1:n-1)); 
     
@@ -37,7 +37,7 @@ for t = dt:dt:t_final
     end
     
     %--------Corrector Step------%
-    %E_bar = E_bar-Artificial;
+    E_bar = E_bar-Artificial;
     Q(1:3,2:n-1) = Q(1:3,2:n-1) - (dt/dx)*(E_bar(1:3,2:n-1) - E_bar(1:3,1:n-2));
     
     %Q(1:3, 2:n-1) = 0.5.*(Q(1:3, 2:n-1) + Q_bar(1:3, 2:n-1) - (dt/dx)*(E_bar(1:3, 2:n-1) - E_bar(1:3, 1:n-2)));
@@ -48,7 +48,18 @@ for t = dt:dt:t_final
     e=Q(3,1:n); 
     p=(gamma-1)*(e-0.5*rho.*u.^2);
 end
+plot(rho)
 % hold on
 % plot(x,rho,'g');
 % plot(x,rho.*u,'g');
+% subplot(2,2,1),     	plot(x,rho ,'o', xx, rhoexact, 'r')
+% subplot(2,2,2),    	plot(x,u,'o', xx, uexact, 'r')
+% subplot(2,2,3),    	plot(x,p, 'o', xx, pexact, 'r' )
+% subplot(2,2,4),        plot(x, e, 'o',xx,  pexact./(gamma-1) + 0.5*rhoexact.*uexact.^2, 'r' )
+%  
+%  subplot(2,2,1),     	plot(xx,rhoexact)
+%  subplot(2,2,2),    	plot(xx,uexact)
+%  subplot(2,2,3),    	plot(xx,pexact)
+%  subplot(2,2,4),  	plot(xx,pexact./(gamma-1) + 0.5*rhoexact.*uexact.^2)
+
 % plot(x,e,'g');

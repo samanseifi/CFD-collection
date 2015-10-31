@@ -1,43 +1,52 @@
 clear all
 close all
 
-nx = 40;
-nt = 200;
-l = 4.0;
-dx = l/(nx - 1);
-x = 0:dx:l;
+Input;
+
+%nx = 201;
+%nt = 50;
+%l = 4.0;
+%dx = l/(nx - 1);
+%x = 0:dx:l;
 c = 1.0;
-sigma = 0.1;
+
+sigma = 0.8;
 dt = sigma*(dx/c);
-u_init = zeros(1,nx);
-u = zeros(1,nx);
-u_new = zeros(1,nx);
 
-% --------- Initial Profile --------- %
+u = Step(x,nx);
+%u = WavePacket(x, nx, 8.0);
+
 for i = 1:nx
-	if (x(i) >= 0) && (x(i) <= 1.0)
-        u_0(i) = sin(4.0*pi*x(i));
-    else
-        u_0(i) = 0.0;
-    end
+    ip(i) = i+1;
+    im(i) = i-1;
 end
-% ---------- First Time Step --------- %
+ip(nx) = 1;
+im(1) = nx;
 
-for i = 2:nx-1
-   u_1(i) = u_0(i) - c*dt*(u_0(i) - u_0(i-1))/dx;
-end
-u_1(1) = 0;
-u_1(nx) = 0;
-u = u_1;
+
 for t = 1:nt
-    for i = 2:nx-1
-        u_new(i) = u_1(i) - c*dt*(u_0(i+1) - u_0(i-1))/(dx);
-    end
-    u_new(1) = 0.0;
-    u_new(nx) = 0.0;
-    u_1 = u_new;
-    u_0 = u_1;
+    for i = 1:nx
+        
+        u_new(i) = 0.5*(u(ip(i)) + u(im(i))) - (dt/dx)*0.5*(u(ip(i)) - u(im(i)));
     
-	plot(x, u_new);
-    drawnow;
+    
+    end
+    
+    
+    u_new(1) = u(1);
+    u_new(end) = u(end);
+    u = u_new;
+	plot(x, u);
+	drawnow;
+    
 end
+%hold on
+%for i = 1:nx
+%    if (x(i) >= 0) && (x(i) <= 2+nt*dt)
+%        u_final(i) = 1.0;
+%    else
+%        u_final(i) = 0;
+%    end
+%end
+
+%plot(x, u)

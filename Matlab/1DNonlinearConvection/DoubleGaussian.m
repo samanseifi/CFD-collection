@@ -1,9 +1,9 @@
 function [ u_init ] = DoubleGaussian( x, nx, vis )
     
-    phi = zeros(nx);
-    dphi = zeros(nx);
+    phi = zeros(1, nx);
+    dphi = zeros(1, nx);
     
-    u = zeros(nx);
+    u = zeros(1, nx);
     
     for i = 1:nx
     	phi(i) = exp(-0.25*(x(i)*x(i))/vis) + exp(-0.25*((2*pi - x(i))^2)/vis);

@@ -14,7 +14,7 @@ sigma = 0.8;
 dt = sigma*(dx/c);
 
 u = Step(x,nx);
-%u = WavePacket(x, nx, 8.0);
+u = WavePacket(x, nx, 16.0);
 
 for i = 1:nx
     ip(i) = i+1;

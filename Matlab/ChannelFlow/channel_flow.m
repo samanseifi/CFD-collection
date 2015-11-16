@@ -94,8 +94,8 @@ while (udiff > 0.001)
         
 end
 
-quiver(X,Y,u,v)
-    
+quiver(X,Y,u,v, 'k')
+axis([0 2 0 2])    
 end
 
 function [b] = buildUpB(rho, dt, dx, dy, u, v)

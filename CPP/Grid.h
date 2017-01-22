@@ -6,19 +6,21 @@
 class Grid {
 
 public:
-      Grid();
-      Grid(int);
-      virtual ~Grid();
+        Grid();
+        Grid(int);
+        virtual ~Grid();
 
-      int num_nodes();
-      int num_cells();
+        int num_nodes();
+        int num_cells();
+        double DeltaX();
 
-      Eigen::VectorXd x_init;
+        Eigen::VectorXd x_init;
 
 private:
 
-      int nnodes;
-      int ncells;
+        int nnodes;
+        int ncells;
+        double dx;
 
 
 };

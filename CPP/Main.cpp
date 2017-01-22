@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <eigen3/Eigen/Dense>
 
 #include "InitialShape.h"
@@ -33,7 +34,7 @@ int main() {
 
         // Time Marching!
         for (int t = 0; t < 10; t++) {
-                std::cout << u_old << std::endl;
+
                 if (t == 0) {
                         u_old = u_i;
                 }

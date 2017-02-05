@@ -15,4 +15,5 @@ u_sol = data2.reshape(t, m)
 for i in xrange(0, t):
     plt.plot(u_sol[i])
 
+
 plt.show()

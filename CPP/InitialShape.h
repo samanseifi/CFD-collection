@@ -12,7 +12,8 @@ public:
         InitialShape(Grid, int);
         virtual ~InitialShape();
 
-        Eigen::VectorXd WaveFunction(Grid);
+        Eigen::VectorXd SquareWaveFunction(Grid);
+        Eigen::VectorXd TriangleWaveFunction(Grid);
         Eigen::VectorXd StepFunction(Grid);
         void Print();
 

@@ -1,4 +1,5 @@
-// compiling with: g++ InitialShape.cpp Scheme.cpp Grid.cpp Main.cpp -o samp1
+// compile with: g++ InitialShape.cpp Scheme.cpp Grid.cpp Main.cpp -o samp1
+// run with: ./samp1 > u.txt
 
 #include <iostream>
 #include <fstream>

@@ -9,11 +9,11 @@ InitialShape::InitialShape() {
 }
 
 InitialShape::InitialShape(Grid grid, int code): u_init(grid.num_nodes()) {
-        // code = 1: Wave function
-        // code = 2: Step function
+        // code = 1: Square Wave function
+        // code = 3: Step function
         if (code == 1) {
-                u_init = WaveFunction(grid);
-        } else if (code == 2) {
+                u_init = SquareWaveFunction(grid);
+        } else if (code == 3) {
                 u_init = StepFunction(grid);
         }
 }
@@ -22,8 +22,14 @@ InitialShape::~InitialShape() {
 
 
 }
-
-Eigen::VectorXd InitialShape::WaveFunction(Grid grid) {
+/*
+*         +------+
+*         |      |
+*         |      |
+*         |      |
+* --------+      +----------------
+*/
+Eigen::VectorXd InitialShape::SquareWaveFunction(Grid grid) {
         Eigen::VectorXd u_0(grid.num_nodes());
         for (int i = 0; i < grid.num_nodes(); i++) {
                 if (grid.x_init(i) > 0.25 && grid.x_init(i) < 0.75) {
@@ -34,7 +40,24 @@ Eigen::VectorXd InitialShape::WaveFunction(Grid grid) {
         }
         return u_0;
 }
+/*
+*             /\
+*            /  \
+*           /    \
+*          /      \
+* --------+        +----------------
+*/
+Eigen::VectorXd TriangleWaveFunction(Grid grid) {
 
+}
+
+/*
+* -----------+
+*            |
+*            |
+*            |
+*            +-------------------
+*/
 Eigen::VectorXd InitialShape::StepFunction(Grid grid) {
         Eigen::VectorXd u_0(grid.num_nodes());
         for (int i = 0; i < grid.num_nodes(); i++) {

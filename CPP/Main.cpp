@@ -1,3 +1,5 @@
+// compiling with: g++ InitialShape.cpp Scheme.cpp Grid.cpp Main.cpp -o samp1
+
 #include <iostream>
 #include <fstream>
 #include <eigen3/Eigen/Dense>
@@ -9,7 +11,12 @@
 int main() {
 
         // Problem parameters
-        int m = 45;
+        int m = 100;
+        int t_end = 50;
+
+        std::cout << m     << std::endl;
+        std::cout << t_end << std::endl;
+
         double c = 10.0;
         double dt = 0.002;
 
@@ -33,12 +40,12 @@ int main() {
         u_old = u_i;
 
         // Time Marching!
-        for (int t = 0; t < 10; t++) {
-
+        for (int t = 0; t < t_end; t++) {
+                std::cout << u_old << std::endl;
                 if (t == 0) {
                         u_old = u_i;
                 }
-                u_new = scheme.Up_Wind(u_old); // codename 1
+                u_new = scheme.Upwind(u_old); // codename 1
                 u_old = u_new;
 
         }

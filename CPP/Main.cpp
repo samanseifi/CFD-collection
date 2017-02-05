@@ -13,13 +13,13 @@ int main() {
 
         // Problem parameters
         int m = 100;
-        int t_end = 50;
+        int t_end = 10;
 
         std::cout << m     << std::endl;
         std::cout << t_end << std::endl;
 
         double c = 10.0;
-        double dt = 0.002;
+        double dt = 0.001;
 
         // Create the grid: m is the number of nodal points
         Grid grid(m);
@@ -46,7 +46,7 @@ int main() {
                 if (t == 0) {
                         u_old = u_i;
                 }
-                u_new = scheme.Upwind(u_old); // codename 1
+                u_new = scheme.MacCormack(u_old); // codename 1
                 u_old = u_new;
 
         }

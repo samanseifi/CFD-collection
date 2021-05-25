@@ -1,24 +1,34 @@
-function [x, u] = nonlinearconv(scheme, l, nx, nt, dt)
-% Solving the nonlinear convection equation using different numerical
-% schemes: Lax-Wendroff, Lax-Friedrichs and MacCormak
+function [x, u] = nonlinearconv(scheme, L, nx, nt, dt, initial)
+% Solving the nonlinear convection equation in 1D using different numerical
+% schemes: 
 %
-% nonlinear convection: du/dt = u * du/dx
-%
-% sample: nonlinearconv('LaxWendroff', 2*pi, 201, 200, 0.0016)
+%   1) Lax-Wendroff, 
+%   2) Lax-Friedrichs,
+%   3) MacCormak
 %
 % choices for 'scheme': 'LaxWendroffTwoStep', 'LaxWendroff', 'LaxFriedrichs', 'MacCormak'
+%
+% nonlinear convection:     0 <= x <= L
+%
+%   du/dt = u * du/dx
+%
+% with periodic BC: u(0) = u(L) and initial condition of 
+%
+% Example run:
+%
+%   nonlinearconv('LaxWendroff', 2*pi, 201, 200, 0.0016)
+%
 
-dx = l/(nx - 1);
-x = 0:dx:l;
-%dt = 0.0016;
+% Discritized domain spatial
+x = linspace(0, L, nx);
+dx = L/(nx - 1);
 
 % Initial Condition
-vis = 0.1;
-u_init = DoubleGaussian(x, nx, vis);
-%u_init = Step(x,nx);
-u = u_init;
+u_0 = initial;
 
-
+% Setup the 1D stencil accounting for periodic BC
+ip = zeros(1, nx);
+im = zeros(1, nx);
 for i = 1:nx
     ip(i) = i+1;
     im(i) = i-1;
@@ -27,19 +37,27 @@ ip(nx) = 1;
 im(1) = nx;
 
 
+u = u_0;
+
+u_new = zeros(size(u_0));
+
 if strcmp(scheme, 'LaxWendroffTwoStep')
     for t = 1:nt  
         for i = 1:nx
-            % Lax-Wendroff two step
+            % Lax-Wendroff
+            % First Step
             u1 = 0.5*(u(i) + u(ip(i))) - 0.25*(dt/dx)*(u(ip(i))^2 - u(i)^2);
+            
+            % Second Step
             u2 = 0.5*(u(im(i)) + u(i)) - 0.25*(dt/dx)*(u(i)^2 - u(im(i))^2);                              
+            
+            % Update the solution!
             u_new(i) = u(i) - 0.5*(dt/dx)*(u1^2 - u2^2); 
         end
         u = u_new;
     end
-end
 
-if strcmp(scheme, 'LaxWendroff')
+elseif strcmp(scheme, 'LaxWendroff')
     for t = 1:nt  
         for i = 1:nx
             % Lax-Wendroff
@@ -49,9 +67,8 @@ if strcmp(scheme, 'LaxWendroff')
         end
         u = u_new;
     end
-end
 
-if strcmp(scheme, 'LaxFriedrichs')
+elseif strcmp(scheme, 'LaxFriedrichs')
     for t = 1:nt  
         for i = 1:nx
             % Lax–Friedrichs
@@ -59,20 +76,18 @@ if strcmp(scheme, 'LaxFriedrichs')
         end
         u = u_new;
     end
-end
 
-if strcmp(scheme, 'MacCormak')
+elseif strcmp(scheme, 'MacCormak')
     u_star = u;
-    for t = 1:nt  
+    for t = 1:nt      
         for i = 1:nx
             % Mac Cormak
-            u_star(i) = u(i) - (dt/dx)*0.5*(u(ip(i))^2 - u(i)^2); % Predictor
-            u_new(i) = 0.5*(u(i) + u_star(i)) - 0.5*(dt/dx)*0.5*(u_star(i)^2 - u_star(im(i))^2); % Corrector
+            % Predictor
+            u_star(i) = u(i) - (dt/dx)*0.5*(u(ip(i))^2 - u(i)^2); 
+            
+            % Corrector
+            u_new(i) = 0.5*(u(i) + u_star(i)) - 0.5*(dt/dx)*0.5*(u_star(i)^2 - u_star(im(i))^2); 
         end
         u = u_new;
 	end
-end
-
-end
-
-   
+end   

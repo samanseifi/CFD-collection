@@ -1,4 +1,4 @@
-function [ u_init ] = DoubleGaussian( x, nx, vis )
+function [ u_0 ] = Initial( x, nx, vis )
     
     phi = zeros(1, nx);
     dphi = zeros(1, nx);
@@ -13,6 +13,6 @@ function [ u_init ] = DoubleGaussian( x, nx, vis )
     	u(i) = (-2.0*vis*(dphi(i)/phi(i))) + 4;
     end
     
-    u_init = u;
+    u_0 = u;
 end
 

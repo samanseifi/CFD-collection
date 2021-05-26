@@ -1,4 +1,4 @@
-function [ u_0 ] = Initial( x, nx, vis )
+function [ u_0 ] = initial( x, nx, vis )
     
     phi = zeros(1, nx);
     dphi = zeros(1, nx);

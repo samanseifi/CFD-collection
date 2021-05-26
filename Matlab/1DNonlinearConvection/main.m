@@ -4,22 +4,24 @@
 clear
 close all
 
-% Defining the domain of solution
-l = 2*pi;
+% % Discretize the domain
+% **<@ 
+% Spatial: 
+l = 2*pi;   % Defining the length of the domain
+nx = 101;   % Number of spatial grid points
+x = linspace(0, l, nx); 
+dx = l / (nx - 1);
 
-% Number of spatial grid points
-nx = 101;
-
-% Number of time steps
-nt = 200;
+% Temporal
+nt = 200;   % Definig the total number of times steps
 dt = 0.0016;
-
-% Discritize the domain
-x = linspace(0, l, nx);
+% **@>
 
 % Create the initial condition
+% **<@ 
 vis = 0.1;
-u_initial = Initial(x, nx, vis);
+u_initial = initial(x, nx, vis);    
+% **@>
 
 % Solving Non-linear convection equation and store the final time result!
 [x1, u1] = nonlinearconv('LaxWendroffTwoStep', l, nx, nt, dt, u_initial);
@@ -29,7 +31,7 @@ u_initial = Initial(x, nx, vis);
 
 % Initial profile
 x_init = x1;
-u_init = Initial(x_init, nx, 0.1); % vis = 0.1;
+u_init = initial(x_init, nx, 0.1); % vis = 0.1;
 
 % Setting up the plotting envirnoment
 xmax = max(max([x1; x2; x3; x4]));

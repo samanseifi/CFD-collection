@@ -25,16 +25,19 @@ dx = L/(nx - 1);
 
 % Initial Condition
 u_0 = initial;
+fprintf("Initial condition loading...")
+
+% Check the initial condition
+if size(u_0) == size(x)
+    fprintf("OK\n")
+else
+    fprintf("Failed \n")
+    fprintf("The initial condition doesn't match with the domain size! \n")
+end
+
 
 % Setup the 1D stencil accounting for periodic BC
-ip = zeros(1, nx);
-im = zeros(1, nx);
-for i = 1:nx
-    ip(i) = i+1;
-    im(i) = i-1;
-end
-ip(nx) = 1;
-im(1) = nx;
+[ip, im] = stencil(nx);
 
 
 u = u_0;
@@ -91,3 +94,14 @@ elseif strcmp(scheme, 'MacCormak')
         u = u_new;
 	end
 end   
+
+function [ip, im] = stencil(nx) 
+    ip = zeros(1, nx);
+    im = zeros(1, nx);
+    for i = 1:nx
+        ip(i) = i+1;
+        im(i) = i-1;
+    end
+    ip(nx) = 1;
+    im(1) = nx;
+    

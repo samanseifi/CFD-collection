@@ -18,7 +18,7 @@ close all
 L = 4*pi;        % Length of the domain
 N = 100;         % Number of grid points
 
-t_final = 30;    % Final time of simulation!
+t_final = 50;    % Final time of simulation!
 nt = 300;        % Number of time steps
 
 % Wave speed (The speed of wave in the given domain)
@@ -36,7 +36,9 @@ u_0 = 2*exp(-(x - L/2).^2);
 u_0 = u_0';
 
 % Setup the visualization
-figure
+h = figure;
+axis tight manual % this ensures that getframe() returns a consistent size
+filename = '1D_wave.gif';
 
 % Preallocating the solution u_new
 u1_new = zeros(N, 1);
@@ -62,11 +64,11 @@ B = diag(ones(1, N));
 B = sparse(B);
 % **@>
 
-u0 = u_0;       % Apply the IC to the system
-u1 = 0.5*A*u0;
+u0 = u_0;       % Apply the IC to the system u_0
+u1 = 0.5*A*u0;  % Apply the IC to the system u_1
 
 t = 0;          % Initialize time
-
+n = 1;          % Gif generator counter!
 % Marching in time!
 while (t < t_final)
     
@@ -82,13 +84,30 @@ while (t < t_final)
 	t = t + dt;
     
     % Plotting live!
-    plot(x, u1, '-bo');
+    plot(x, u1, '-o', 'LineWidth',2);
     
     % Setup the limits and labels
     xlim([0 L]) 
     ylim([-2 2])
-    xlabel('x')
-    ylabel('u(x)')
+    title(sprintf('1D Wave Equation. Time = %7.3f', t));
+    xlabel('x', 'Interpreter', 'latex')
+    ylabel('u(x)', 'Interpreter', 'latex')
 	
     drawnow;
+    
+    % Creating a GIF!
+    % **<@
+    % Capture the plot as an image 
+    frame = getframe(h); 
+    im = frame2im(frame); 
+    [imind,cm] = rgb2ind(im,256); 
+    
+    % Write to the GIF File 
+    if n == 1 
+        imwrite(imind,cm,filename,'gif', 'DelayTime',0.01,'Loopcount',inf); 
+    else 
+        imwrite(imind,cm,filename,'gif', 'DelayTime',0.01,'WriteMode','append'); 
+    end 
+    n = n +1; 
+    % **@>
 end

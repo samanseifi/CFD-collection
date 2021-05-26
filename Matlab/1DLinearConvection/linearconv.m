@@ -13,7 +13,7 @@ close all
 
 % Input parameter
 L = 1.0;        % Length of the domain
-N = 100;        % Number of grid points
+N = 200;        % Number of grid points
 
 t_final = 10;   % Final time of simulation!
 nt = 100;      % Number of time steps
@@ -26,46 +26,63 @@ x = linspace(0, L, N);
 dx = L/(N - 1);     % Alternatively dx = x(2) - x(1)
 dt = t_final/nt;
 
-% Generate the shape of the intial condition
-u_0 = zeros(1, N);
-u_0(4: floor(N/5)) = 1.0;
-
-% Setup the 1D stencil accounting for periodic BC
-ip = zeros(1, N);
-im = zeros(1, N);
-for i = 1:N
-    ip(i) = i+1;
-    im(i) = i-1;
+% Frist check the CFL codition (This is the same for all explicit schemes)
+if c <= dx/dt
+    fprintf("NOTE: The explicit method is STABLE!\n")
+else
+    fprintf("WARNING: The explicit method is UNSTABLE!\n")
 end
-ip(N) = 1;      % The final grid point to the first
-im(1) = N;      % The first grid point to the final
+
+% Generate the shape of the intial condition
+u_0 = zeros(N, 1);
+u_0(4: floor(N/5)) = 1.0;
 
 % Setup the visualization
 figure
 
-
 % Preallocating the solution u_new
-u1_new = zeros(1, N);
-u2_new = zeros(1, N);
+u1_new = zeros(N, 1);
+u2_new = zeros(N, 1);
 
-u1 = u_0;  % Apply the IC to the system
-u2 = u_0;  % Apply the IC to the system
+u1 = sparse(u_0);  % Apply the IC to the system
+u2 = sparse(u_0);  % Apply the IC to the system
 
 t = 0;    % Initialize time
+
+% Solving the problem with matrices: [u]_k+1 = {A}[u]_k
+% For explicit schemes matrix {A} is constant
+% 1) Upwind Scheme
+% **<@
+dm = c * (dt/dx);           % ***> Off diagonal -1 values
+d = 1 - c * (dt/dx);        % ***> Diagonal values
+
+% Constructing the matrix!
+A_upwind = diag(d * ones(1, N)) + diag(dm * ones(1, N-1), -1);
+A_upwind(1, N) = dm;
+A_upwind = sparse(A_upwind);
+% **@>
+
+% 2) Lax–Friedrichs method
+% **<@
+dm = 0.5*(1 + c*(dt/dx));   % ***> Off diagonal -1 values
+dp = 0.5*(1 - c*(dt/dx));   % ***> Off diagonal +1 values
+
+% Constructing the matrix!
+A_LaxFr = diag(dm * ones(1, N-1), -1) + diag(dp * ones(1, N-1), 1);
+A_LaxFr(1, N) = dm;
+A_LaxFr(N, 1) = dp;
+A_LaxFr = sparse(A_LaxFr);
+% **@>
+
 
 % Marching in time!
 while (t < t_final)
     
-    % Update solution for the new time step
-    for i = 1:N   
-        
-        % Simple explicit and forward in time mrthod
-        u1_new(i) = u1(i) - c*(dt/dx)*(u1(i) - u1(im(i)));
-        
-        % Lax–Friedrichs method 
-        u2_new(i) = 0.5*(u2(ip(i)) + u2(im(i))) - c*0.5*(dt/dx)*(u2(ip(i)) - u2(im(i)));
-        
-    end
+    % Upwind scheme!
+    u1_new = A_upwind * u1;
+    
+    % Lax–Friedrichs scheme1
+    u2_new = A_LaxFr * u2;
     
     % Store new solutions
     u1 = u1_new;
@@ -75,7 +92,7 @@ while (t < t_final)
 	t = t + dt;
     
     % Plotting live!
-    plot(x, u1, '-o', x, u2, '-ro');
+    plot(x, u1, '-bo', x, u2, '--ks');
     
     % Setup the limits and labels
     xlim([0 L]) 

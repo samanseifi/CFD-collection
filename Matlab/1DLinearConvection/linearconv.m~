@@ -49,7 +49,7 @@ u2_new = zeros(N, 1);
 u1 = sparse(u_0);  % Apply the IC to the system
 u2 = sparse(u_0);  % Apply the IC to the system
 
-t = dt;    % Initialize time
+t = 0;    % Initialize time
 
 % Solving the problem with matrices: [u]_k+1 = {A}[u]_k
 % For explicit schemes matrix {A} is constant
@@ -86,19 +86,16 @@ while (t < t_final)
     % Lax–Friedrichs scheme!
     u2_new = A_LaxFr * u2;
     
-    u3_new = (-heaviside(0.1*L -x + c*t) + heaviside(0.2*L-x + c*t))';
-
-    
     % Store new solutions
     u1 = u1_new;
     u2 = u2_new;
-    u3 = u3_new;
-    
+    u3 = -heaviside(0.1*L -x) + heaviside(0.2*L-x);
+    u3
     % Step in time!
 	t = t + dt;
     
     % Plotting live!
-    plot(x, u1,'-o',  x, u2, 's', x, u3, '--k');
+    plot(x, u1,'-o',  x, u2, '--s');
     
     % Setup the limits and labels
     xlim([0 L]) 

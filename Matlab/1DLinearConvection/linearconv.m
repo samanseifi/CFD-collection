@@ -12,11 +12,11 @@ clear
 close all
 
 % Input parameter
-L = 1.0;        % Length of the domain
+L = 1;        % Length of the domain
 N = 100;        % Number of grid points
 
-t_final = 50;   % Final time of simulation!
-nt = 500;      % Number of time steps
+t_final = 10;   % Final time of simulation!
+nt = 100;      % Number of time steps
 
 % Wave speed (The speed of wave in the given domain)
 c = 0.1;
@@ -86,8 +86,11 @@ while (t < t_final)
     % Lax–Friedrichs scheme!
     u2_new = A_LaxFr * u2;
     
-    u3_new = (-heaviside(0.1*L -x + c*t) + heaviside(0.2*L-x + c*t))';
-
+    u3_new = (-heaviside(0.1*L - x + c*t) + heaviside(0.2*L - x + c*t))';
+%      u3N = u3_new(N);
+% %     u31 = u3_new(1);
+%      u3_new(1) = u3N;
+%     u3_new(N) = u31;
     
     % Store new solutions
     u1 = u1_new;
